@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="http://www.bittenbypython.com/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="http://www.bittenbypython.com/theme/pygments/monokai.min.css">
+  <link rel="stylesheet" type="text/css" href="http://www.bittenbypython.com/theme/font-awesome/css/font-awesome.min.css">
+
+
+
+
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+
+<meta name="author" content="YesWeAreCoding" />
+<meta name="description" content="Liste de tricks appris lors de challenge" />
+<meta name="keywords" content="challenge, optimisation">
+<meta property="og:site_name" content="Bitten By Python"/>
+<meta property="og:title" content="Cheatsheet de challenge"/>
+<meta property="og:description" content="Liste de tricks appris lors de challenge"/>
+<meta property="og:locale" content="fr_FR"/>
+<meta property="og:url" content="http://www.bittenbypython.com/challenge-cheatsheet.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2017-12-16 13:37:00+01:00"/>
+<meta property="article:modified_time" content="2010-12-05 19:30:00+01:00"/>
+<meta property="article:author" content="http://www.bittenbypython.com/author/yeswearecoding.html">
+<meta property="article:section" content="challenge"/>
+<meta property="article:tag" content="challenge"/>
+<meta property="article:tag" content="optimisation"/>
+<meta property="og:image" content="theme/img/ninja.png">
+
+  <title>Bitten By Python &ndash; Cheatsheet de challenge</title>
+
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://www.bittenbypython.com">
+        <img src="theme/img/ninja.png" alt="Bitten By Python" title="Bitten By Python">
+      </a>
+      <h1><a href="http://www.bittenbypython.com">Bitten By Python</a></h1>
+
+
+      <nav>
+        <ul class="list">
+
+          <li><a href="mailto:yeswearecoding@gmail.com" target="_blank"><i class="fa fa-envelope-o" aria-hidden="true" fa-3x></i> Email</a></li>
+          <li><a href="https://github.com/yeswearecoding" target="_blank"><i class="fa fa-github" aria-hidden="true" fa-3x></i> Github</a></li>
+          <li><a href="https://www.hackerrank.com/yeswearecoding" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> Hackerrank</a></li>
+        </ul>
+      </nav>
+
+      <ul class="social">
+      </ul>
+    </div>
+
+
+  </aside>
+  <main>
+
+
+<article class="single">
+  <header>
+    <h1 id="challenge-cheatsheet">Cheatsheet de challenge</h1>
+    <p>
+          Posted on Sam 16 décembre 2017 in <a href="http://www.bittenbypython.com/category/challenge.html">challenge</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>Hello,</p>
+<p>A force de faire quelques challenge sur <a href="https://www.hackerrank.com/yeswearecoding">HackerRank</a>, j'ai
+noté quelques <em>tricks</em> que j'oublie souvent. Du coup, je met ça içi. Servez-vous :-)</p>
+<h2><em>list</em> et <em>set</em></h2>
+<h3>intersection de deux listes</h3>
+<p>Récupérer l'intersection entre deux listes (en fait, uniquement si l'une des deux peut être transformée en set):</p>
+<div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;un&#39;</span><span class="p">,</span> <span class="s1">&#39;deux&#39;</span><span class="p">,</span> <span class="s1">&#39;trois&#39;</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dites&#39;</span><span class="p">,</span> <span class="s1">&#39;trente&#39;</span><span class="p">,</span> <span class="s1">&#39;trois&#39;</span><span class="p">]</span>
+<span class="n">inter</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+</pre></div>
+
+
+<p>Résultat :</p>
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">inter</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;trois&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<h2>module <em>itertools</em></h2>
+<h3>toutes les combinaisons d'une liste de listes</h3>
+<p>Imaginons que j'ai une méga liste qui contient des listes:  </p>
+<div class="highlight"><pre><span></span><span class="n">mega_liste</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]]</span>
+</pre></div>
+
+
+<p>Tout le job de génération des combinaison se fait par la fonction <em>product</em> de <em>itertools</em>. La doc (en français !) se trouve ici : <a href="https://docs.python.org/fr/3.6/library/itertools.html#itertools.product">doc itertools</a>. Les explications restent un peu pas forcément hyper claires mais j'espère que ce petit exemple vous permettra d'en comprendre l'utilité.  </p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="n">combinaisons</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">mega_liste</span><span class="p">)</span>
+</pre></div>
+
+
+<p>On utilise ici l'opérateur <em>splat</em> (l'étoile) pour faire de l'<em>unpacking</em> sur 'mega_liste'. Un (excellent) article sur ça : <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">SametMax - operateur splat ou étoile en Python</a>.<br>
+On obtient alors :  </p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">combinaison</span> <span class="ow">in</span> <span class="n">combinaisons</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">combinaison</span><span class="p">)</span>
+
+<span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
+</pre></div>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://www.bittenbypython.com/tag/challenge.html">challenge</a>
+      <a href="http://www.bittenbypython.com/tag/optimisation.html">optimisation</a>
+    </p>
+  </div>
+
+  <div class="center social-share">
+    <p>    Like this article? Share it with your friends!
+</p>
+    <div class="addthis_native_toolbox"></div>
+    <div class="addthis_sharing_toolbox"></div>
+    <div class="addthis_inline_share_toolbox"></div>
+  </div>
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'bittenbybypthon';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>
+        Please enable JavaScript to view comments.
+
+</noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; YesWeAreCoding 2017 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-111329786-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a34c2ac2c1ffc84" async="async"></script>
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Bitten By Python ",
+  "url" : "http://www.bittenbypython.com",
+  "image": "theme/img/ninja.png",
+  "description": "Un (autre) blog sur Python"
+}
+</script>
+</body>
+</html>
