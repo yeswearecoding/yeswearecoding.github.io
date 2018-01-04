@@ -20,18 +20,25 @@
   <meta name="robots" content="" />
 
 
-    <meta name="author" content="YesWeAreCoding" />
-    <meta name="description" content="Un (autre) blog sur Python" />
+<meta name="author" content="YesWeAreCoding" />
+<meta name="description" content="Utilisation de Peewee et Bottle pour une mini stack web" />
+<meta name="keywords" content="web, bottle, peewee">
 <meta property="og:site_name" content="Bitten By Python"/>
-<meta property="og:type" content="blog"/>
-<meta property="og:title" content="Bitten By Python"/>
-<meta property="og:description" content="Un (autre) blog sur Python"/>
+<meta property="og:title" content="Bottle et Peewee"/>
+<meta property="og:description" content="Utilisation de Peewee et Bottle pour une mini stack web"/>
 <meta property="og:locale" content="fr_FR"/>
-<meta property="og:url" content="http://www.bittenbypython.com"/>
+<meta property="og:url" content="http://www.bittenbypython.com/drafts/web-bottle-peewee.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2017-12-16 17:32:00+01:00"/>
+<meta property="article:modified_time" content="2017-12-16 17:32:00+01:00"/>
+<meta property="article:author" content="http://www.bittenbypython.com/author/yeswearecoding.html">
+<meta property="article:section" content="web"/>
+<meta property="article:tag" content="web"/>
+<meta property="article:tag" content="bottle"/>
+<meta property="article:tag" content="peewee"/>
 <meta property="og:image" content="theme/img/ninja.png">
 
-  <title>Bitten By Python &ndash;     Archives
-</title>
+  <title>Bitten By Python &ndash; Bottle et Peewee</title>
 
 </head>
 <body>
@@ -63,17 +70,50 @@
 
 <article class="single">
   <header>
-    <h1>    Archives
-</h1>
+    <h1 id="web-bottle-peewee">Bottle et Peewee</h1>
+    <p>
+          Posted on Sam 16 décembre 2017 in <a href="http://www.bittenbypython.com/category/web.html">web</a>
+
+
+    </p>
   </header>
+
+
   <div>
-    <dl>
-      <dt>Jeu 04 janvier 2018</dt>
-      <dd><a href="http://www.bittenbypython.com/machine-learning-kaggle-titanic.html">Premier pas en Machine Learning avec Scikit-learn : prédire les survivants sur le Titanic grace à Kaggle</a></dd>
-      <dt>Sam 16 décembre 2017</dt>
-      <dd><a href="http://www.bittenbypython.com/challenge-cheatsheet.html">Cheatsheet de challenge</a></dd>
-    </dl>
+    <p>Dans mes développements, dès que j'ai besoin d'afficher et gérer quelques pages web, je pense automatique à <a href="https://bottlepy.org/docs/dev/">Bottle</a>. Ce mini-framework web (il tient en un fichier) fait le minimum, mais le fait bien ;-).<br>
+<a href="http://docs.peewee-orm.com/en/latest/">Peewee</a> est un ORM (object-relational mapping) qui permet de manipuler des bases de données en utilisant des objets Python. Ceci permet de se détacher des problématiques liées aux bases de données (ouverture, requêtes SQL, sauvegarde, fermeture, etc) et d'avoir ainsi un code faiblement couplé à une techno BDD.</p>
   </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://www.bittenbypython.com/tag/web.html">web</a>
+      <a href="http://www.bittenbypython.com/tag/bottle.html">bottle</a>
+      <a href="http://www.bittenbypython.com/tag/peewee.html">peewee</a>
+    </p>
+  </div>
+
+  <div class="center social-share">
+    <p>    Like this article? Share it with your friends!
+</p>
+    <div class="addthis_native_toolbox"></div>
+    <div class="addthis_sharing_toolbox"></div>
+    <div class="addthis_inline_share_toolbox"></div>
+  </div>
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'bittenbybypthon';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>
+        Please enable JavaScript to view comments.
+
+</noscript>
 </article>
 
     <footer>
