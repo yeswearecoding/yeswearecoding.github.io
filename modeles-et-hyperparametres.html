@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="http://www.bittenbypython.com/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="http://www.bittenbypython.com/theme/pygments/monokai.min.css">
+  <link rel="stylesheet" type="text/css" href="http://www.bittenbypython.com/theme/font-awesome/css/font-awesome.min.css">
+
+
+
+    <link href="http://www.bittenbypython.com/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="Bitten By Python RSS">
+
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+
+<meta name="author" content="YesWeAreCoding" />
+<meta name="description" content="Hello, L'un des problèmes lorsque l'on débute en machine learning est le choix de l'algorithme (ou modèle) à utiliser. Je viens de tomber sur un article du blog de Kaggle où l'auteur partage son approche des différents problèmes à résoudre en ML. J'ai noté deux parties qui m'ont éclairé un peu plus sur le choix des modèles et des hyperparamètres à régler." />
+<meta name="keywords" content="machine-learning, ml, modele, hyperparametre">
+<meta property="og:site_name" content="Bitten By Python"/>
+<meta property="og:title" content="Choix d'un modèle et valeurs des hyperparamètres"/>
+<meta property="og:description" content="Hello, L'un des problèmes lorsque l'on débute en machine learning est le choix de l'algorithme (ou modèle) à utiliser. Je viens de tomber sur un article du blog de Kaggle où l'auteur partage son approche des différents problèmes à résoudre en ML. J'ai noté deux parties qui m'ont éclairé un peu plus sur le choix des modèles et des hyperparamètres à régler."/>
+<meta property="og:locale" content="fr_FR"/>
+<meta property="og:url" content="http://www.bittenbypython.com/modeles-et-hyperparametres.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-01-14 14:27:00+01:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="http://www.bittenbypython.com/author/yeswearecoding.html">
+<meta property="article:section" content="machine-learning"/>
+<meta property="article:tag" content="machine-learning"/>
+<meta property="article:tag" content="ml"/>
+<meta property="article:tag" content="modele"/>
+<meta property="article:tag" content="hyperparametre"/>
+<meta property="og:image" content="theme/img/ninja.png">
+
+  <title>Bitten By Python &ndash; Choix d'un modèle et valeurs des hyperparamètres</title>
+
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://www.bittenbypython.com">
+        <img src="theme/img/ninja.png" alt="Bitten By Python" title="Bitten By Python">
+      </a>
+      <h1><a href="http://www.bittenbypython.com">Bitten By Python</a></h1>
+
+
+
+      <ul class="social">
+        <li><a class="sc-envelope-o" href="mailto:yeswearecoding@gmail.com" target="_blank"><i class="fa fa-envelope-o"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/yeswearecoding" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-rss" href="http://www.bittenbypython.com/feeds/all.rss.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+
+
+  </aside>
+  <main>
+
+
+<article class="single">
+  <header>
+    <h1 id="modeles-et-hyperparametres">Choix d'un modèle et valeurs des hyperparamètres</h1>
+    <p>
+          Posted on Dim 14 janvier 2018 in <a href="http://www.bittenbypython.com/category/machine-learning.html">machine-learning</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Hello,</p>
+<p>L'un des problèmes lorsque l'on débute en <em>machine learning</em> est le choix de l'algorithme (ou modèle) à utiliser. Je viens de tomber sur un <a href="http://blog.kaggle.com/2016/07/21/approaching-almost-any-machine-learning-problem-abhishek-thakur/">article du blog de Kaggle</a> où l'auteur partage son approche des différents problèmes à résoudre en <em>ML</em>. J'ai noté deux parties qui m'ont éclairé un peu plus sur le choix des modèles et des hyperparamètres à régler.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Choix-d'un-modèle">Choix d'un modèle<a class="anchor-link" href="#Choix-d'un-modèle">¶</a></h1><p>Il y a deux grandes familles d'algorithmes : ceux qui permettent de réaliser une prédiction (à l'aide d'une régression) et ceux qui identifie une variable parmi d'autres (la classification). Les modèles les plus courants pour réaliser ses tâches sont donc :</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead><tr>
+<th style="text-align:left">Classification</th>
+<th>Regression</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Random Forest</td>
+<td>Random Forest</td>
+</tr>
+<tr>
+<td style="text-align:left">GBM</td>
+<td>GBM</td>
+</tr>
+<tr>
+<td style="text-align:left">Logistic Regression</td>
+<td>Linear Regression</td>
+</tr>
+<tr>
+<td style="text-align:left">Naive Bayes</td>
+<td>Ridge</td>
+</tr>
+<tr>
+<td style="text-align:left">Support Vector Machines</td>
+<td>Lasso</td>
+</tr>
+<tr>
+<td style="text-align:left">k-Nearest Neighbors</td>
+<td>SVR</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Choix-des-hyperparamètres">Choix des hyperparamètres<a class="anchor-link" href="#Choix-des-hyperparamètres">¶</a></h1><p>Les hyperparamètres sont ces variables qui permettent d'affiner le fonctionnement d'un modèle de <em>machine learning</em>. Jusqu'à présent, j'utilisais des valeurs trouvées dans un livre ou sur des sites internet, sans trop savoir qu'est ce que je pouvais utiliser, jusqu'à quelle valeur je pouvais aller.<br />
+Bref, j'y allais à tâtons au "pif-o-mètre". Mais l'auteur partage également un tableau récapitulatif de ces différents hyperparamètres et les plages de valeurs les plus prometteuses.<br />
+Je le reprend ici :</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead><tr>
+<th style="text-align:center">Modèle</th>
+<th style="text-align:center">Hyperparamètre</th>
+<th style="text-align:center">Plage de données</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>Régression linéaire</strong></td>
+<td style="text-align:center">fit_intercept<br />normalize</td>
+<td style="text-align:center">True / False<br />True / False</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Ridge</strong></td>
+<td style="text-align:center">alpha<br />fit_intercept<br />normalize</td>
+<td style="text-align:center">0.01, 0.1, 1.0, 10, 100<br />True / False<br />True / False</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>K-neighbors</strong></td>
+<td style="text-align:center">N_neighbors<br />p</td>
+<td style="text-align:center">2, 4, 8, 16...<br />2,3</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>SVM</strong></td>
+<td style="text-align:center">C<br />gamma<br />class_weight</td>
+<td style="text-align:center">0.001, 0.01...10...100...1000<br />Auto ou Random Search<br />Balanced, None</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Régression logistique</strong></td>
+<td style="text-align:center">Penalty<br />C</td>
+<td style="text-align:center">L1 ou I2<br />0.001, 0.01...10...100</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Naive Bayes</strong></td>
+<td style="text-align:center">aucun</td>
+<td style="text-align:center">aucun</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Lasso</strong></td>
+<td style="text-align:center">alpha<br />normalize</td>
+<td style="text-align:center">0.1, 1.0, 10<br />True / False</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Random Forest</strong></td>
+<td style="text-align:center">n_estimators<br />max_depth<br />min_samples_split<br />min_samples_leaf<br />max_features</td>
+<td style="text-align:center">120, 300, 500, 800, 1200<br />5, 8, 15, 25, 30, None<br />1, 2, 5, 10, 15, 100<br />1, 2, 5, 10<br />Log2, sqrt, None</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Xgboost</strong></td>
+<td style="text-align:center">eta<br />gamma<br />max_depth<br />min_child_weight<br />subsample<br />colsample_bytree<br />lambda<br />alpha</td>
+<td style="text-align:center">0.01, 0.015, 0.025, 0.05, 0.1<br />0.05-0.1, 0.3, 0.5, 0.7, 0.9, 1.0<br />3, 5, 7, 9, 12, 15, 17, 25<br />1, 3, 5, 7<br />0.6, 0.7, 0.8, 0.9, 1.0<br />0.6, 0.7, 0.8, 0.9, 1.0<br />0.01-0.1, 1.0, Random Search<br />0, 0.1, 0.5, 1.0, Random Search</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>J'espère que ces petits récapitulatifs vous seront autant utiles qu'à moi ;-)</p>
+<p>A bientôt !</p>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://www.bittenbypython.com/tag/machine-learning.html">machine-learning</a>
+      <a href="http://www.bittenbypython.com/tag/ml.html">ml</a>
+      <a href="http://www.bittenbypython.com/tag/modele.html">modele</a>
+      <a href="http://www.bittenbypython.com/tag/hyperparametre.html">hyperparametre</a>
+    </p>
+  </div>
+
+  <div class="center social-share">
+    <p>    Like this article? Share it with your friends!
+</p>
+    <div class="addthis_native_toolbox"></div>
+    <div class="addthis_sharing_toolbox"></div>
+    <div class="addthis_inline_share_toolbox"></div>
+  </div>
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'bittenbybypthon';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>
+        Please enable JavaScript to view comments.
+
+</noscript>
+</article>
+
+    <footer>
+<p>
+  &copy; YesWeAreCoding 2017 - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+</p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+         src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p>    </footer>
+  </main>
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-111329786-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a34c2ac2c1ffc84" async="async"></script>
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Bitten By Python ",
+  "url" : "http://www.bittenbypython.com",
+  "image": "theme/img/ninja.png",
+  "description": "Un (autre) blog sur Python"
+}
+</script>
+</body>
+</html>

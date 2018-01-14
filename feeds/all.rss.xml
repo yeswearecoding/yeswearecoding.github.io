@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Bitten By Python</title><link>http://www.bittenbypython.com/</link><description></description><lastBuildDate>Thu, 04 Jan 2018 14:55:00 +0100</lastBuildDate><item><title>Premier pas en Machine Learning avec Scikit-learn : prédire les survivants sur le Titanic grace à Kaggle</title><link>http://www.bittenbypython.com/machine-learning-kaggle-titanic.html</link><description>
+<rss version="2.0"><channel><title>Bitten By Python</title><link>http://www.bittenbypython.com/</link><description></description><lastBuildDate>Sun, 14 Jan 2018 14:27:00 +0100</lastBuildDate><item><title>Choix d'un modèle et valeurs des hyperparamètres</title><link>http://www.bittenbypython.com/modeles-et-hyperparametres.html</link><description>
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Hello,&lt;/p&gt;
+&lt;p&gt;L'un des problèmes lorsque l'on débute en &lt;em&gt;machine learning&lt;/em&gt; est le choix de l'algorithme (ou modèle) à utiliser. Je viens de tomber sur un &lt;a href="http://blog.kaggle.com/2016/07/21/approaching-almost-any-machine-learning-problem-abhishek-thakur/"&gt;article du blog de Kaggle&lt;/a&gt; où l'auteur partage son approche des différents problèmes à résoudre en &lt;em&gt;ML&lt;/em&gt;. J'ai noté deux parties qui m'ont éclairé un peu plus sur le choix des modèles et des hyperparamètres à régler.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">YesWeAreCoding</dc:creator><pubDate>Sun, 14 Jan 2018 14:27:00 +0100</pubDate><guid isPermaLink="false">tag:www.bittenbypython.com,2018-01-14:/modeles-et-hyperparametres.html</guid><category>machine-learning</category><category>ml</category><category>modele</category><category>hyperparametre</category></item><item><title>Premier pas en Machine Learning avec Scikit-learn : prédire les survivants sur le Titanic grace à Kaggle</title><link>http://www.bittenbypython.com/machine-learning-kaggle-titanic.html</link><description>
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
