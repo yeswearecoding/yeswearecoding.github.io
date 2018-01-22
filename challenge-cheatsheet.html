@@ -63,6 +63,7 @@
   <main>
 
 
+
 <article class="single">
   <header>
     <h1 id="challenge-cheatsheet">Cheatsheet de challenge</h1>
@@ -78,46 +79,43 @@
     <p>Hello,</p>
 <p>A force de faire quelques challenge sur <a href="https://www.hackerrank.com/yeswearecoding">HackerRank</a>, j'ai
 noté quelques <em>tricks</em> que j'oublie souvent. Du coup, je met ça içi. Servez-vous :-)</p>
-<h2><em>list</em> et <em>set</em></h2>
-<h3>intersection de deux listes</h3>
+<h2 id="list-et-set"><em>list</em> et <em>set</em></h2>
+<h3 id="intersection-de-deux-listes">intersection de deux listes</h3>
 <p>Récupérer l'intersection entre deux listes (en fait, uniquement si l'une des deux peut être transformée en set):</p>
-<div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;un&#39;</span><span class="p">,</span> <span class="s1">&#39;deux&#39;</span><span class="p">,</span> <span class="s1">&#39;trois&#39;</span><span class="p">]</span>
-<span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dites&#39;</span><span class="p">,</span> <span class="s1">&#39;trente&#39;</span><span class="p">,</span> <span class="s1">&#39;trois&#39;</span><span class="p">]</span>
-<span class="n">inter</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
-</pre></div>
-
-
+<pre><code>:::python
+a = ['un', 'deux', 'trois']
+b = ['dites', 'trente', 'trois']
+inter = list(filter(set(a).__contains__, b))
+</code></pre>
 <p>Résultat :</p>
-<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">inter</span><span class="p">)</span>
-<span class="p">[</span><span class="s1">&#39;trois&#39;</span><span class="p">]</span>
-</pre></div>
-
-
-<h2>module <em>itertools</em></h2>
-<h3>toutes les combinaisons d'une liste de listes</h3>
+<pre><code>:::python
+print(inter)
+['trois']
+</code></pre>
+<h2 id="module-itertools">module <em>itertools</em></h2>
+<h3 id="toutes-les-combinaisons-dune-liste-de-listes">toutes les combinaisons d'une liste de listes</h3>
 <p>Imaginons que j'ai une méga liste qui contient des listes:  </p>
-<div class="highlight"><pre><span></span><span class="n">mega_liste</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]]</span>
-</pre></div>
-
-
+<pre><code>:::python
+mega_liste = [['a', 'b'], ['c', 'd', 'e'], ['f']]
+</code></pre>
 <p>Tout le job de génération des combinaison se fait par la fonction <em>product</em> de <em>itertools</em>. La doc (en français !) se trouve ici : <a href="https://docs.python.org/fr/3.6/library/itertools.html#itertools.product">doc itertools</a>. Les explications restent un peu pas forcément hyper claires mais j'espère que ce petit exemple vous permettra d'en comprendre l'utilité.  </p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
-<span class="n">combinaisons</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">mega_liste</span><span class="p">)</span>
-</pre></div>
-
-
-<p>On utilise ici l'opérateur <em>splat</em> (l'étoile) pour faire de l'<em>unpacking</em> sur 'mega_liste'. Un (excellent) article sur ça : <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">SametMax - operateur splat ou étoile en Python</a>.<br>
+<pre><code>:::python
+import itertools
+combinaisons = itertools.product(*mega_liste)
+</code></pre>
+<p>On utilise ici l'opérateur <em>splat</em> (l'étoile) pour faire de l'<em>unpacking</em> sur 'mega_liste'. Un (excellent) article sur ça : <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">SametMax - operateur splat ou étoile en Python</a>.<br />
 On obtient alors :  </p>
-<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">combinaison</span> <span class="ow">in</span> <span class="n">combinaisons</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">combinaison</span><span class="p">)</span>
+<pre><code>:::python
+for combinaison in combinaisons:
+    print(combinaison)
 
-<span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
-</pre></div>
+('a', 'c', 'f')
+('a', 'd', 'f')
+('a', 'e', 'f')
+('b', 'c', 'f')
+('b', 'd', 'f')
+('b', 'e', 'f')
+</code></pre>
   </div>
   <div class="tag-cloud">
     <p>
