@@ -26,24 +26,23 @@
 
 
 <meta name="author" content="YesWeAreCoding" />
-<meta name="description" content="Utilisation de Peewee et Bottle pour une mini stack web" />
-<meta name="keywords" content="web, bottle, peewee">
+<meta name="description" content="Utiliser correctement VIM et le rendre utilisable et utile !" />
+<meta name="keywords" content="vim, ide">
 <meta property="og:site_name" content="Bitten By Python"/>
-<meta property="og:title" content="Bottle et Peewee"/>
-<meta property="og:description" content="Utilisation de Peewee et Bottle pour une mini stack web"/>
+<meta property="og:title" content="Comment (enfin!) utiliser Vim"/>
+<meta property="og:description" content="Utiliser correctement VIM et le rendre utilisable et utile !"/>
 <meta property="og:locale" content="fr_FR"/>
-<meta property="og:url" content="http://www.bittenbypython.com/drafts/web-bottle-peewee.html"/>
+<meta property="og:url" content="http://www.bittenbypython.com/drafts/enfin-utiliser-vim.html"/>
 <meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2017-12-16 17:32:00+01:00"/>
-<meta property="article:modified_time" content="2017-12-16 17:32:00+01:00"/>
+<meta property="article:published_time" content="2018-01-28 10:09:00+01:00"/>
+<meta property="article:modified_time" content="2018-01-28 10:09:00+01:00"/>
 <meta property="article:author" content="http://www.bittenbypython.com/author/yeswearecoding.html">
-<meta property="article:section" content="web"/>
-<meta property="article:tag" content="web"/>
-<meta property="article:tag" content="bottle"/>
-<meta property="article:tag" content="peewee"/>
+<meta property="article:section" content="tools"/>
+<meta property="article:tag" content="vim"/>
+<meta property="article:tag" content="ide"/>
 <meta property="og:image" content="theme/img/ninja.png">
 
-  <title>Bitten By Python &ndash; Bottle et Peewee</title>
+  <title>Bitten By Python &ndash; Comment (enfin!) utiliser Vim</title>
 
 </head>
 
@@ -83,9 +82,9 @@
 
 <article class="single">
   <header>
-    <h1 id="web-bottle-peewee">Bottle et Peewee</h1>
+    <h1 id="enfin-utiliser-vim">Comment (enfin!) utiliser Vim</h1>
     <p>
-          Posted on Sam 16 décembre 2017 in <a href="http://www.bittenbypython.com/category/web.html">web</a>
+          Posted on Dim 28 janvier 2018 in <a href="http://www.bittenbypython.com/category/tools.html">tools</a>
 
 
     </p>
@@ -110,17 +109,81 @@
 
     <!-- End Mailjet -->
 
-    <p>Dans mes développements, dès que j'ai besoin d'afficher et gérer quelques pages web, je pense automatique à <a href="https://bottlepy.org/docs/dev/">Bottle</a>. Ce mini-framework web (il tient en un fichier) fait le minimum, mais le fait bien ;-).<br />
-<a href="http://docs.peewee-orm.com/en/latest/">Peewee</a> est un ORM (object-relational mapping) qui permet de manipuler des bases de données en utilisant des objets Python. Ceci permet de se détacher des problématiques liées aux bases de données (ouverture, requêtes SQL, sauvegarde, fermeture, etc) et d'avoir ainsi un code faiblement couplé à une techno BDD.</p>
+    <p>Hello !</p>
+<p>Vous connaissez Vim ? Mais si, quand vous êtes sur Linux et que le seul éditeur disponible c'est lui ! Quand vous ne comprenez jamais quand est-ce qu'il va écrire dans le fichier ou s'il va exécuter des commandes... Vim, ce grand incompris, si difficile à utiliser...</p>
+<p>Et pourtant, quand vous faites quelques recherches (j'ai pas dit RTFM..) pour retrouver ces #!@?!#@! de commandes pour enfin réussir à faire une modif dans un fichier de conf, vous tombez sur pleins d'articles où les gens sont heureux depuis qu'il maitrise cet outil du diable ! Comment est-ce possible ? Et il y a des gens qui l'utilise pour faire du dév ??? Moi qui n'arrive pas à modifier mon <em>.conf</em>... </p>
+<p>Allez, nous allons faire un tour des fonctionnalités pour (enfin!) réussir à en faire quelque chose, voir l'apprécier, et peut-être même en tomber amoureux ! J'exagère un peu mais, même si la courbe d'apprentissage est assez raide, on peut finir par le trouver bien utile. Pour ma part, j'en suis très content quand je dois éditer des fichiers sur des machines un peu légères (il marche très bien sur un raspberry par exemple) ou même pour coder des petits projets.</p>
+<p>Allez, <em>let's dive into vim !</em></p>
+<hr />
+<p>Sommaire</p>
+<div class="toc">
+<ul>
+<li><a href="#guide-de-survie">Guide de survie</a></li>
+<li><a href="#un-vim-un-peu-plus-confortable">Un VIM un peu plus confortable</a></li>
+<li><a href="#vim-en-tant-quide">VIM en tant qu'IDE</a></li>
+</ul>
+</div>
+<hr />
+<h2 id="guide-de-survie">Guide de survie</h2>
+<p>Il faut comprendre une chose avec Vim. Il fonctionne selon plusieurs modes, chacun avec son comportement et permettant de réaliser des actions particulières. Les trois les plus importants sont :
+1. normal : le mode par défaut au démarrage. Il permet de se déplacer dans le texte et de le manipuler (copier, couper, coller).
+1. insert : comme son nom l'indique, permet d'insérer du texte. 
+1. visual : essentiellement pour faire des sélections, sert par exemple pour copier des blocs de commandes à répeter.</p>
+<p>La difficulté lorsque l'on débute avec Vim, c'est de passer du mode normal au mode insertion puis revenir au mode normal pour enregistrer ses modifications.</p>
+<blockquote>
+<p>Pour entrer dans le mode <code>insert</code>, appuyer sur <code>i</code>. Faites vos modifications puis appuyer sur <code>echap</code> pour revenir au mode <code>normal</code>. Sauvegarder vos changements en faisant les touches <code>:</code> (deux points) puis <code>w</code> (comme write), appuyez sur <code>entrée</code>.</p>
+</blockquote>
+<p>Ca y est, vous savez éditer un fichier avec vim. C'était si compliqué ? </p>
+<h2 id="un-vim-un-peu-plus-confortable">Un VIM un peu plus confortable</h2>
+<p>VIM contient pas mal de fonctionnalités incluses par défaut. Pour les charger à l'ouverture, il faut paramétrer le fichier <code>~/.vimrc</code> avec les options voulues. Je vous ai préparer un <em>gist</em> avec un <code>vimrc</code> fonctionnel qui ne nécessite aucune dépendances extérieures (contrairement à la troisième partie de cet article où on fera de VIM une bête de concours !). J'ai commenté les principales lignes, n'hésitez pas à me laisser un commentaires si vous souhaitez plus d'info ;-)</p>
+<p>[gist:id=a231c759b23063150f63279885ae660a]</p>
+<h2 id="vim-en-tant-quide">VIM en tant qu'IDE</h2>
+<p>Là, on passe au chose sérieuse... On peut en faire quelque chose de vraiment puissant, avec autocomplétion et tout le toutim.<br />
+On commence par installer le gestionnaire de plugins. Il en existe plusieurs, mon préféré est <a href="https://github.com/VundleVim/Vundle.vim">Vundle</a>. Pour l'installer (nécessite <code>git</code>) :</p>
+<p><code>bash
+mkdir ~/.vim/bundle  
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim</code></p>
+<p>Il faut modifier son <code>.vimrc</code> pour prendre en compte les plugins (copier/coller de la doc) et ajouter les lignes suivantes :</p>
+<pre><code>::: bash
+" set the runtime path to include Vundle and initialize  
+set rtp+=~/.vim/bundle/Vundle.vim  
+call vundle#begin()  
+" alternatively, pass a path where Vundle should install plugins  
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required  
+Plugin 'VundleVim/Vundle.vim'
+</code></pre>
+<p>On peut maintenant y ajouter nos plugins selon cet exemple :</p>
+<p>```bash
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}</p>
+<p>" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+```</p>
   </div>
 
 
 
   <div class="tag-cloud">
     <p>
-      <a href="http://www.bittenbypython.com/tag/web.html">web</a>
-      <a href="http://www.bittenbypython.com/tag/bottle.html">bottle</a>
-      <a href="http://www.bittenbypython.com/tag/peewee.html">peewee</a>
+      <a href="http://www.bittenbypython.com/tag/vim.html">vim</a>
+      <a href="http://www.bittenbypython.com/tag/ide.html">ide</a>
     </p>
   </div>
 
