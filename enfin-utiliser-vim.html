@@ -10,7 +10,7 @@
   <!-- <link rel="stylesheet" type="text/css" href="http://www.bittenbypython.com/theme/stylesheet/prism.min.css"> -->
   <!-- <script src="http://www.bittenbypython.com/theme/js/prism.js" type="text/javascript"></script> -->
 
-  <link rel="stylesheet" type="text/css" href="http://www.bittenbypython.com/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="http://www.bittenbypython.com/theme/pygments/perldoc.min.css">
   <link rel="stylesheet" type="text/css" href="http://www.bittenbypython.com/theme/font-awesome/css/font-awesome.min.css">
 
 
@@ -120,7 +120,12 @@
 <ul>
 <li><a href="#guide-de-survie">Guide de survie</a></li>
 <li><a href="#un-vim-un-peu-plus-confortable">Un VIM un peu plus confortable</a></li>
-<li><a href="#vim-en-tant-quide">VIM en tant qu'IDE</a></li>
+<li><a href="#vim-en-tant-quide">VIM en tant qu'IDE</a><ul>
+<li><a href="#gestionnaire-de-plugins">Gestionnaire de plugins</a></li>
+<li><a href="#plugins-principaux">Plugins principaux</a></li>
+</ul>
+</li>
+<li><a href="#references">Références</a></li>
 </ul>
 </div>
 <hr />
@@ -135,7 +140,7 @@
 </blockquote>
 <p>Ca y est, vous savez éditer un fichier avec vim. C'était si compliqué ? </p>
 <h2 id="un-vim-un-peu-plus-confortable">Un VIM un peu plus confortable</h2>
-<p>VIM contient pas mal de fonctionnalités incluses par défaut. Pour les charger à l'ouverture, il faut paramétrer le fichier <code>~/.vimrc</code> avec les options voulues. Je vous ai préparer un <em>gist</em> avec un <code>vimrc</code> fonctionnel qui ne nécessite aucune dépendances extérieures (contrairement à la troisième partie de cet article où on fera de VIM une bête de concours !). J'ai commenté les principales lignes, n'hésitez pas à me laisser un commentaires si vous souhaitez plus d'info ;-)</p>
+<p>VIM contient pas mal de fonctionnalités incluses par défaut. Pour les charger à l'ouverture, il faut paramétrer le fichier <code>~/.vimrc</code> avec les options voulues. Je vous ai préparer un <em>gist</em> avec un <code>vimrc</code> fonctionnel qui ne nécessite aucune dépendances extérieures (contrairement à la troisième partie de cet article où on fera de VIM une bête de concours !). J'ai commenté les principales lignes, n'hésitez pas à me laisser un commentaire si vous souhaitez plus d'info ;-)</p>
 <div class="gist">
     <script src='https://gist.github.com/a231c759b23063150f63279885ae660a.js'></script>
     <noscript>
@@ -196,44 +201,66 @@ imap <F8> <Esc> :tabnext <CR>i</code></pre>
     </noscript>
 </div>
 <h2 id="vim-en-tant-quide">VIM en tant qu'IDE</h2>
-<p>Là, on passe au chose sérieuse... On peut en faire quelque chose de vraiment puissant, avec autocomplétion et tout le toutim.<br />
-On commence par installer le gestionnaire de plugins. Il en existe plusieurs, mon préféré est <a href="https://github.com/VundleVim/Vundle.vim">Vundle</a>. Pour l'installer (nécessite <code>git</code>) :</p>
-<p><code>bash
-mkdir ~/.vim/bundle  
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim</code></p>
-<p>Il faut modifier son <code>.vimrc</code> pour prendre en compte les plugins (copier/coller de la doc) et ajouter les lignes suivantes :</p>
-<pre><code>::: bash
-" set the runtime path to include Vundle and initialize  
-set rtp+=~/.vim/bundle/Vundle.vim  
-call vundle#begin()  
-" alternatively, pass a path where Vundle should install plugins  
-"call vundle#begin('~/some/path/here')
+<p>Là, on passe au chose sérieuse... On peut en faire quelque chose de vraiment puissant, avec autocomplétion et tout le toutim.</p>
+<h3 id="gestionnaire-de-plugins">Gestionnaire de plugins</h3>
+<p>On commence par installer le gestionnaire de plugins. Il en existe plusieurs, mon préféré est <a href="https://github.com/VundleVim/Vundle.vim">Vundle</a>. Pour l'installer (nécessite <code>git</code>) :</p>
+<div class="codehilite" style="background: #eeeedd"><pre style="line-height: 125%"><span></span>mkdir ~/.vim/bundle  
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+</pre></div>
 
-" let Vundle manage Vundle, required  
-Plugin 'VundleVim/Vundle.vim'
-</code></pre>
+
+<p>Il faut modifier son <code>.vimrc</code> pour prendre en compte les plugins (adapté directement de la doc) et ajouter les lignes suivantes :</p>
+<div class="codehilite" style="background: #eeeedd"><pre style="line-height: 125%"><span></span><span style="color: #8B008B; font-weight: bold">set</span> <span style="color: #658b00">nocompatible</span>        <span style="color: #228B22">&quot; version améliorée de Vi</span>
+<span style="color: #8B008B; font-weight: bold">filetype</span> off        <span style="color: #228B22">&quot; nécessaire</span>
+
+<span style="color: #228B22">&quot; on indique le chemin de l&#39;outil de gestion des scripts puis on l&#39;appelle  </span>
+<span style="color: #8B008B; font-weight: bold">set</span> <span style="color: #658b00">rtp</span>+=~<span style="color: #1c7e71">/.vim/</span>bundle/Vundle.<span style="color: #8B008B; font-weight: bold">vim</span>  
+<span style="color: #8B008B; font-weight: bold">call</span> vundle#begin()  
+
+<span style="color: #228B22">&quot; on charge les plugins, le premier étant Vundle lui-même (obligatoire)</span>
+Plugin <span style="color: #CD5555">&#39;VundleVim/Vundle.vim&#39;</span>  
+</pre></div>
+
+
 <p>On peut maintenant y ajouter nos plugins selon cet exemple :</p>
-<p>```bash
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}</p>
-<p>" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-```</p>
+<div class="codehilite" style="background: #eeeedd"><pre style="line-height: 125%"><span></span><span style="color: #228B22">&quot; Quelques exemples des formats supportés.</span>
+<span style="color: #228B22">&quot; Toujours garder les plugins entre vundle#begin/end.</span>
+<span style="color: #228B22">&quot; plugin d&#39;un dépôt GitHub</span>
+Plugin <span style="color: #CD5555">&#39;tpope/vim-fugitive&#39;</span>
+<span style="color: #228B22">&quot; Plugin git qui n&#39;est pas hébergé sur GitHub</span>
+Plugin <span style="color: #CD5555">&#39;git://git.wincent.com/command-t.git&#39;</span>
+<span style="color: #228B22">&quot; Dépôt git sur notre machine locale (utile quand on développe son propre plugin)</span>
+Plugin <span style="color: #CD5555">&#39;file:///home/gmarik/path/to/plugin&#39;</span>
+<span style="color: #228B22">&quot; Le script sparkup est dans un sous répertoire du dépôt appelé vim.</span>
+<span style="color: #228B22">&quot; Indiquez correctement le chemin d&#39;exécution</span>
+Plugin <span style="color: #CD5555">&#39;rstacruz/sparkup&#39;</span>, {<span style="color: #CD5555">&#39;rtp&#39;</span>: <span style="color: #CD5555">&#39;vim/&#39;</span>}
+<span style="color: #228B22">&quot; Installer L9 et éviter les conflits de nom si vous avez déjà</span>
+<span style="color: #228B22">&quot; différentes versions quelque part.</span>
+Plugin <span style="color: #CD5555">&#39;ascenator/L9&#39;</span>, {<span style="color: #CD5555">&#39;name&#39;</span>: <span style="color: #CD5555">&#39;newL9&#39;</span>}
+
+<span style="color: #228B22">&quot; Tous les plugins doivent être définis avant cette ligne</span>
+<span style="color: #8B008B; font-weight: bold">call</span> vundle#<span style="color: #8B008B; font-weight: bold">end</span>()            <span style="color: #228B22">&quot; nécessaire</span>
+<span style="color: #8B008B; font-weight: bold">filetype</span> plugin indent <span style="color: #8B008B; font-weight: bold">on</span>    <span style="color: #228B22">&quot; nécessaire</span>
+</pre></div>
+
+
+<h3 id="plugins-principaux">Plugins principaux</h3>
+<ul>
+<li>Autocomplétion : <a href="https://github.com/Valloric/YouCompleteMe">YouCompleteMe</a></li>
+<li>Vérification de la syntaxe : <a href="https://github.com/vim-syntastic/syntastic">Syntastic</a></li>
+<li>Style de couleur : <a href="https://github.com/jnurmine/Zenburn">Zenburn</a>, <a href="https://github.com/lifepillar/vim-solarized8">Solarized</a></li>
+<li>Explorateur de fichiers : <a href="https://github.com/scrooloose/nerdtree">NERDTree</a></li>
+<li>Recherche avancée : <a href="https://github.com/kien/ctrlp.vim">ctrlP</a></li>
+<li>Git : <a href="https://github.com/tpope/vim-fugitive">vim-fugitive</a></li>
+</ul>
+<p>Voilà, une fois que vous maîtriserez VIM et ces plugins, vous serez un vrai barbu ! ^^(ou une vraie barbue, <em>why not</em> :-) )</p>
+<h2 id="references">Références</h2>
+<p>Si vous voulez un peu de lecture :  </p>
+<ul>
+<li>un très bon ebook en français : <a href="https://vimebook.com/fr">Vim pour les humains</a></li>
+<li>la référence (en anglais) : <a href="http://amzn.to/2rOV9Jk">Practical Vim: Edit Text at the Speed of Thought</a></li>
+<li>la nouvelle version à paraitre en février 2018 : <a href="http://amzn.to/2nna73A">Modern Vim: Craft Your Development Environment With Vim 8 and Neovim</a> </li>
+</ul>
   </div>
 
 
