@@ -115,40 +115,43 @@ noté quelques <em>tricks</em> que j'oublie souvent. Du coup, je met ça içi. S
 <h2 id="list-et-set"><em>list</em> et <em>set</em></h2>
 <h3 id="intersection-de-deux-listes">intersection de deux listes</h3>
 <p>Récupérer l'intersection entre deux listes (en fait, uniquement si l'une des deux peut être transformée en set):</p>
-<pre><code>:::python
-a = ['un', 'deux', 'trois']
-b = ['dites', 'trente', 'trois']
-inter = list(filter(set(a).__contains__, b))
-</code></pre>
+<div class="codehilite" style="background: #eeeedd"><pre style="line-height: 125%"><span></span>a = [<span style="color: #CD5555">&#39;un&#39;</span>, <span style="color: #CD5555">&#39;deux&#39;</span>, <span style="color: #CD5555">&#39;trois&#39;</span>]
+b = [<span style="color: #CD5555">&#39;dites&#39;</span>, <span style="color: #CD5555">&#39;trente&#39;</span>, <span style="color: #CD5555">&#39;trois&#39;</span>]
+inter = <span style="color: #658b00">list</span>(<span style="color: #658b00">filter</span>(<span style="color: #658b00">set</span>(a).<span style="color: #008b45">__contains__</span>, b))
+</pre></div>
+
+
 <p>Résultat :</p>
-<pre><code>:::python
-print(inter)
-['trois']
-</code></pre>
+<div class="codehilite" style="background: #eeeedd"><pre style="line-height: 125%"><span></span><span style="color: #8B008B; font-weight: bold">print</span>(inter)
+[<span style="color: #CD5555">&#39;trois&#39;</span>]
+</pre></div>
+
+
 <h2 id="module-itertools">module <em>itertools</em></h2>
 <h3 id="toutes-les-combinaisons-dune-liste-de-listes">toutes les combinaisons d'une liste de listes</h3>
 <p>Imaginons que j'ai une méga liste qui contient des listes:  </p>
-<pre><code>:::python
-mega_liste = [['a', 'b'], ['c', 'd', 'e'], ['f']]
-</code></pre>
+<div class="codehilite" style="background: #eeeedd"><pre style="line-height: 125%"><span></span>mega_liste = [[<span style="color: #CD5555">&#39;a&#39;</span>, <span style="color: #CD5555">&#39;b&#39;</span>], [<span style="color: #CD5555">&#39;c&#39;</span>, <span style="color: #CD5555">&#39;d&#39;</span>, <span style="color: #CD5555">&#39;e&#39;</span>], [<span style="color: #CD5555">&#39;f&#39;</span>]]
+</pre></div>
+
+
 <p>Tout le job de génération des combinaison se fait par la fonction <em>product</em> de <em>itertools</em>. La doc (en français !) se trouve ici : <a href="https://docs.python.org/fr/3.6/library/itertools.html#itertools.product">doc itertools</a>. Les explications restent un peu pas forcément hyper claires mais j'espère que ce petit exemple vous permettra d'en comprendre l'utilité.  </p>
-<pre><code>:::python
-import itertools
+<div class="codehilite" style="background: #eeeedd"><pre style="line-height: 125%"><span></span><span style="color: #8B008B; font-weight: bold">import</span> <span style="color: #008b45; text-decoration: underline">itertools</span>
 combinaisons = itertools.product(*mega_liste)
-</code></pre>
+</pre></div>
+
+
 <p>On utilise ici l'opérateur <em>splat</em> (l'étoile) pour faire de l'<em>unpacking</em> sur 'mega_liste'. Un (excellent) article sur ça : <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">SametMax - operateur splat ou étoile en Python</a>.<br />
 On obtient alors :  </p>
-<pre><code>:::python
-for combinaison in combinaisons:
-    print(combinaison)
+<div class="codehilite" style="background: #eeeedd"><pre style="line-height: 125%"><span></span><span style="color: #8B008B; font-weight: bold">for</span> combinaison <span style="color: #8B008B">in</span> combinaisons:
+    <span style="color: #8B008B; font-weight: bold">print</span>(combinaison)
 
-('a', 'c', 'f')
-('a', 'd', 'f')
-('a', 'e', 'f')
-('b', 'c', 'f')
-('b', 'd', 'f')
-('b', 'e', 'f')
-</code></pre>
+(<span style="color: #CD5555">&#39;a&#39;</span>, <span style="color: #CD5555">&#39;c&#39;</span>, <span style="color: #CD5555">&#39;f&#39;</span>)
+(<span style="color: #CD5555">&#39;a&#39;</span>, <span style="color: #CD5555">&#39;d&#39;</span>, <span style="color: #CD5555">&#39;f&#39;</span>)
+(<span style="color: #CD5555">&#39;a&#39;</span>, <span style="color: #CD5555">&#39;e&#39;</span>, <span style="color: #CD5555">&#39;f&#39;</span>)
+(<span style="color: #CD5555">&#39;b&#39;</span>, <span style="color: #CD5555">&#39;c&#39;</span>, <span style="color: #CD5555">&#39;f&#39;</span>)
+(<span style="color: #CD5555">&#39;b&#39;</span>, <span style="color: #CD5555">&#39;d&#39;</span>, <span style="color: #CD5555">&#39;f&#39;</span>)
+(<span style="color: #CD5555">&#39;b&#39;</span>, <span style="color: #CD5555">&#39;e&#39;</span>, <span style="color: #CD5555">&#39;f&#39;</span>)
+</pre></div>
   </div>
 
 

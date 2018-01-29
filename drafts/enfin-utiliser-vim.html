@@ -140,42 +140,46 @@
 <h2 id="vim-en-tant-quide">VIM en tant qu'IDE</h2>
 <p>Là, on passe au chose sérieuse... On peut en faire quelque chose de vraiment puissant, avec autocomplétion et tout le toutim.<br />
 On commence par installer le gestionnaire de plugins. Il en existe plusieurs, mon préféré est <a href="https://github.com/VundleVim/Vundle.vim">Vundle</a>. Pour l'installer (nécessite <code>git</code>) :</p>
-<p><code>bash
-mkdir ~/.vim/bundle  
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim</code></p>
-<p>Il faut modifier son <code>.vimrc</code> pour prendre en compte les plugins (copier/coller de la doc) et ajouter les lignes suivantes :</p>
-<pre><code>::: bash
-" set the runtime path to include Vundle and initialize  
-set rtp+=~/.vim/bundle/Vundle.vim  
-call vundle#begin()  
-" alternatively, pass a path where Vundle should install plugins  
-"call vundle#begin('~/some/path/here')
+<div class="codehilite" style="background: #eeeedd"><pre style="line-height: 125%"><span></span>mkdir ~/.vim/bundle  
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+</pre></div>
 
-" let Vundle manage Vundle, required  
-Plugin 'VundleVim/Vundle.vim'
-</code></pre>
+
+<p>Il faut modifier son <code>.vimrc</code> pour prendre en compte les plugins (copier/coller de la doc) et ajouter les lignes suivantes :</p>
+<div class="codehilite" style="background: #eeeedd"><pre style="line-height: 125%"><span></span>::: bash
+<span style="color: #CD5555">&quot; set the runtime path to include Vundle and initialize  </span>
+<span style="color: #CD5555">set rtp+=~/.vim/bundle/Vundle.vim  </span>
+<span style="color: #CD5555">call vundle#begin()  </span>
+<span style="color: #CD5555">&quot;</span> alternatively, pass a path where Vundle should install plugins  
+<span style="color: #CD5555">&quot;call vundle#begin(&#39;~/some/path/here&#39;)</span>
+
+<span style="color: #CD5555">&quot;</span> <span style="color: #658b00">let</span> Vundle manage Vundle, required  
+Plugin <span style="color: #CD5555">&#39;VundleVim/Vundle.vim&#39;</span>
+</pre></div>
+
+
 <p>On peut maintenant y ajouter nos plugins selon cet exemple :</p>
-<p>```bash
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}</p>
-<p>" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-```</p>
+<div class="codehilite" style="background: #eeeedd"><pre style="line-height: 125%"><span></span><span style="color: #CD5555">&quot; The following are examples of different formats supported.</span>
+<span style="color: #CD5555">&quot;</span> Keep Plugin commands between vundle#begin/end.
+<span style="color: #CD5555">&quot; plugin on GitHub repo</span>
+<span style="color: #CD5555">Plugin &#39;tpope/vim-fugitive&#39;</span>
+<span style="color: #CD5555">&quot;</span> plugin from http://vim-scripts.org/vim/scripts.html
+<span style="color: #CD5555">&quot; Plugin &#39;L9&#39;</span>
+<span style="color: #CD5555">&quot;</span> Git plugin not hosted on GitHub
+Plugin <span style="color: #CD5555">&#39;git://git.wincent.com/command-t.git&#39;</span>
+<span style="color: #CD5555">&quot; git repos on your local machine (i.e. when working on your own plugin)</span>
+<span style="color: #CD5555">Plugin &#39;file:///home/gmarik/path/to/plugin&#39;</span>
+<span style="color: #CD5555">&quot;</span> The sparkup vim script is in a subdirectory of this repo called vim.
+<span style="color: #CD5555">&quot; Pass the path to set the runtimepath properly.</span>
+<span style="color: #CD5555">Plugin &#39;rstacruz/sparkup&#39;, {&#39;rtp&#39;: &#39;vim/&#39;}</span>
+<span style="color: #CD5555">&quot;</span> Install L9 and avoid a Naming conflict <span style="color: #8B008B; font-weight: bold">if</span> you<span style="color: #CD5555">&#39;ve already installed a</span>
+<span style="color: #CD5555">&quot; different version somewhere else.</span>
+<span style="color: #CD5555">&quot; Plugin &#39;</span>ascenator/L9<span style="color: #CD5555">&#39;, {&#39;</span>name<span style="color: #CD5555">&#39;: &#39;</span>newL9<span style="color: #a61717; background-color: #e3d2d2">&#39;</span>}
+
+<span style="color: #CD5555">&quot; All of your Plugins must be added before the following line</span>
+<span style="color: #CD5555">call vundle#end()            &quot;</span> required
+filetype plugin indent on    <span style="color: #CD5555">&quot; required</span>
+</pre></div>
   </div>
 
 
