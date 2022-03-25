@@ -15,7 +15,7 @@ print(inter) [&#39;trois&#39;] module itertools toutes les combinaisons d&rsquo;
 <meta name="author" content="Gwenaël Nardin">
 <link rel="canonical" href="http://www.bittenbypython.com/posts/20171216-challenge/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.4dcb3c4f38462f66c6b6137227726f5543cb934cca9788f041c087e374491df2.js" integrity="sha256-Tcs8TzhGL2bGthNyJ3JvVUPLk0zKl4jwQcCH43RJHfI="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="http://www.bittenbypython.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://www.bittenbypython.com/favicon-16x16.png">
@@ -24,7 +24,7 @@ print(inter) [&#39;trois&#39;] module itertools toutes les combinaisons d&rsquo;
 <link rel="mask-icon" href="http://www.bittenbypython.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
+<meta name="generator" content="Hugo 0.95.0" />
 
 <script type="application/javascript">
 var doNotTrack = false;
@@ -87,7 +87,7 @@ print(inter) [&#39;trois&#39;] module itertools toutes les combinaisons d&rsquo;
   "keywords": [
     "tips"
   ],
-  "articleBody": "Hello,\nA force de faire quelques challenge sur HackerRank, j’ai noté quelques tricks que j’oublie souvent. Du coup, je met ça içi. Servez-vous :-)\nlist et set intersection de deux listes Récupérer l’intersection entre deux listes (en fait, uniquement si l’une des deux peut être transformée en set):\na = ['un', 'deux', 'trois'] b = ['dites', 'trente', 'trois'] inter = list(filter(set(a).__contains__, b)) Résultat :\nprint(inter) ['trois'] module itertools toutes les combinaisons d’une liste de listes Imaginons que j’ai une méga liste qui contient des listes:\nmega_liste = [['a', 'b'], ['c', 'd', 'e'], ['f']] Tout le job de génération des combinaison se fait par la fonction product de itertools. La doc (en français !) se trouve ici : doc itertools. Les explications restent un peu pas forcément hyper claires mais j’espère que ce petit exemple vous permettra d’en comprendre l’utilité.\nimport itertools combinaisons = itertools.product(*mega_liste) On utilise ici l’opérateur splat (l’étoile) pour faire de l'unpacking sur ‘mega_liste’. Un (excellent) article sur ça : SametMax - operateur splat ou étoile en Python.\nOn obtient alors :\nfor combinaison in combinaisons: print(combinaison) ('a', 'c', 'f') ('a', 'd', 'f') ('a', 'e', 'f') ('b', 'c', 'f') ('b', 'd', 'f') ('b', 'e', 'f') ",
+  "articleBody": "Hello,\nA force de faire quelques challenge sur HackerRank, j’ai noté quelques tricks que j’oublie souvent. Du coup, je met ça içi. Servez-vous :-)\nlist et set intersection de deux listes Récupérer l’intersection entre deux listes (en fait, uniquement si l’une des deux peut être transformée en set):\na = ['un', 'deux', 'trois'] b = ['dites', 'trente', 'trois'] inter = list(filter(set(a).__contains__, b)) Résultat :\nprint(inter) ['trois'] module itertools toutes les combinaisons d’une liste de listes Imaginons que j’ai une méga liste qui contient des listes:\nmega_liste = [['a', 'b'], ['c', 'd', 'e'], ['f']] Tout le job de génération des combinaison se fait par la fonction product de itertools. La doc (en français !) se trouve ici : doc itertools. Les explications restent un peu pas forcément hyper claires mais j’espère que ce petit exemple vous permettra d’en comprendre l’utilité.\nimport itertools combinaisons = itertools.product(*mega_liste) On utilise ici l’opérateur splat (l’étoile) pour faire de l’unpacking sur ‘mega_liste’. Un (excellent) article sur ça : SametMax - operateur splat ou étoile en Python.\nOn obtient alors :\nfor combinaison in combinaisons:  print(combinaison)  ('a', 'c', 'f') ('a', 'd', 'f') ('a', 'e', 'f') ('b', 'c', 'f') ('b', 'd', 'f') ('b', 'e', 'f') ",
   "wordCount" : "197",
   "inLanguage": "en",
   "datePublished": "2017-12-16T13:37:00+01:00",
@@ -151,31 +151,31 @@ noté quelques <em>tricks</em> que j&rsquo;oublie souvent. Du coup, je met ça i
 <h2 id="list-et-set"><em>list</em> et <em>set</em><a hidden class="anchor" aria-hidden="true" href="#list-et-set">#</a></h2>
 <h3 id="intersection-de-deux-listes">intersection de deux listes<a hidden class="anchor" aria-hidden="true" href="#intersection-de-deux-listes">#</a></h3>
 <p>Récupérer l&rsquo;intersection entre deux listes (en fait, uniquement si l&rsquo;une des deux peut être transformée en set):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">a <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;un&#39;</span>, <span style="color:#e6db74">&#39;deux&#39;</span>, <span style="color:#e6db74">&#39;trois&#39;</span>]
-b <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;dites&#39;</span>, <span style="color:#e6db74">&#39;trente&#39;</span>, <span style="color:#e6db74">&#39;trois&#39;</span>]
-inter <span style="color:#f92672">=</span> list(filter(set(a)<span style="color:#f92672">.</span>__contains__, b))
-</code></pre></div><p>Résultat :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">print(inter)
-[<span style="color:#e6db74">&#39;trois&#39;</span>]
-</code></pre></div><h2 id="module-itertools">module <em>itertools</em><a hidden class="anchor" aria-hidden="true" href="#module-itertools">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>a <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;un&#39;</span>, <span style="color:#e6db74">&#39;deux&#39;</span>, <span style="color:#e6db74">&#39;trois&#39;</span>]
+</span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;dites&#39;</span>, <span style="color:#e6db74">&#39;trente&#39;</span>, <span style="color:#e6db74">&#39;trois&#39;</span>]
+</span></span><span style="display:flex;"><span>inter <span style="color:#f92672">=</span> list(filter(set(a)<span style="color:#f92672">.</span>__contains__, b))
+</span></span></code></pre></div><p>Résultat :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(inter)
+</span></span><span style="display:flex;"><span>[<span style="color:#e6db74">&#39;trois&#39;</span>]
+</span></span></code></pre></div><h2 id="module-itertools">module <em>itertools</em><a hidden class="anchor" aria-hidden="true" href="#module-itertools">#</a></h2>
 <h3 id="toutes-les-combinaisons-dune-liste-de-listes">toutes les combinaisons d&rsquo;une liste de listes<a hidden class="anchor" aria-hidden="true" href="#toutes-les-combinaisons-dune-liste-de-listes">#</a></h3>
 <p>Imaginons que j&rsquo;ai une méga liste qui contient des listes:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mega_liste <span style="color:#f92672">=</span> [[<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>], [<span style="color:#e6db74">&#39;c&#39;</span>, <span style="color:#e6db74">&#39;d&#39;</span>, <span style="color:#e6db74">&#39;e&#39;</span>], [<span style="color:#e6db74">&#39;f&#39;</span>]]
-</code></pre></div><p>Tout le job de génération des combinaison se fait par la fonction <em>product</em> de <em>itertools</em>. La doc (en français !) se trouve ici : <a href="https://docs.python.org/fr/3.6/library/itertools.html#itertools.product">doc itertools</a>. Les explications restent un peu pas forcément hyper claires mais j&rsquo;espère que ce petit exemple vous permettra d&rsquo;en comprendre l&rsquo;utilité.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> itertools
-combinaisons <span style="color:#f92672">=</span> itertools<span style="color:#f92672">.</span>product(<span style="color:#f92672">*</span>mega_liste)
-</code></pre></div><p>On utilise ici l&rsquo;opérateur <em>splat</em> (l&rsquo;étoile) pour faire de l'<em>unpacking</em> sur &lsquo;mega_liste&rsquo;. Un (excellent) article sur ça : <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">SametMax - operateur splat ou étoile en Python</a>.<br>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>mega_liste <span style="color:#f92672">=</span> [[<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>], [<span style="color:#e6db74">&#39;c&#39;</span>, <span style="color:#e6db74">&#39;d&#39;</span>, <span style="color:#e6db74">&#39;e&#39;</span>], [<span style="color:#e6db74">&#39;f&#39;</span>]]
+</span></span></code></pre></div><p>Tout le job de génération des combinaison se fait par la fonction <em>product</em> de <em>itertools</em>. La doc (en français !) se trouve ici : <a href="https://docs.python.org/fr/3.6/library/itertools.html#itertools.product">doc itertools</a>. Les explications restent un peu pas forcément hyper claires mais j&rsquo;espère que ce petit exemple vous permettra d&rsquo;en comprendre l&rsquo;utilité.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> itertools
+</span></span><span style="display:flex;"><span>combinaisons <span style="color:#f92672">=</span> itertools<span style="color:#f92672">.</span>product(<span style="color:#f92672">*</span>mega_liste)
+</span></span></code></pre></div><p>On utilise ici l&rsquo;opérateur <em>splat</em> (l&rsquo;étoile) pour faire de l&rsquo;<em>unpacking</em> sur &lsquo;mega_liste&rsquo;. Un (excellent) article sur ça : <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">SametMax - operateur splat ou étoile en Python</a>.<br>
 On obtient alors :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> combinaison <span style="color:#f92672">in</span> combinaisons:
-    print(combinaison)
-
-(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;c&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
-(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;d&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
-(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;e&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
-(<span style="color:#e6db74">&#39;b&#39;</span>, <span style="color:#e6db74">&#39;c&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
-(<span style="color:#e6db74">&#39;b&#39;</span>, <span style="color:#e6db74">&#39;d&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
-(<span style="color:#e6db74">&#39;b&#39;</span>, <span style="color:#e6db74">&#39;e&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> combinaison <span style="color:#f92672">in</span> combinaisons:
+</span></span><span style="display:flex;"><span>    print(combinaison)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;c&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
+</span></span><span style="display:flex;"><span>(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;d&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
+</span></span><span style="display:flex;"><span>(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;e&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
+</span></span><span style="display:flex;"><span>(<span style="color:#e6db74">&#39;b&#39;</span>, <span style="color:#e6db74">&#39;c&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
+</span></span><span style="display:flex;"><span>(<span style="color:#e6db74">&#39;b&#39;</span>, <span style="color:#e6db74">&#39;d&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
+</span></span><span style="display:flex;"><span>(<span style="color:#e6db74">&#39;b&#39;</span>, <span style="color:#e6db74">&#39;e&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>)
+</span></span></code></pre></div>
 
   </div>
   <footer class="post-footer">
@@ -239,7 +239,7 @@ On obtient alors :</p>
 </article>
     </main>
     <footer class="footer">
-    <span>&copy; 2021 <a href="http://www.bittenbypython.com/">Bitten By Python</a></span>
+    <span>&copy; 2022 <a href="http://www.bittenbypython.com/">Bitten By Python</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

@@ -12,7 +12,7 @@ Le Go (ou Golang) est un langage développé depuis quelques années désormais 
 <meta name="author" content="Gwenaël Nardin">
 <link rel="canonical" href="http://www.bittenbypython.com/posts/20210902_goroutines/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.b9ff4cc257e914dab489bd18086151800e18f91456a5174bf28489210227a659.css" integrity="sha256-uf9MwlfpFNq0ib0YCGFRgA4Y&#43;RRWpRdL8oSJIQInplk=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.4dcb3c4f38462f66c6b6137227726f5543cb934cca9788f041c087e374491df2.js" integrity="sha256-Tcs8TzhGL2bGthNyJ3JvVUPLk0zKl4jwQcCH43RJHfI="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="http://www.bittenbypython.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://www.bittenbypython.com/favicon-16x16.png">
@@ -21,7 +21,7 @@ Le Go (ou Golang) est un langage développé depuis quelques années désormais 
 <link rel="mask-icon" href="http://www.bittenbypython.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.87.0" />
+<meta name="generator" content="Hugo 0.95.0" />
 
 <script type="application/javascript">
 var doNotTrack = false;
@@ -78,7 +78,7 @@ Le Go (ou Golang) est un langage développé depuis quelques années désormais 
   "keywords": [
     "concurrence", "multithreading"
   ],
-  "articleBody": "Nouvelle année, nouveau challenge ! Ca fait pas mal de temps de je lorgne sur le Go (ou Golang) et ça y est, il est venu le temps de s’y mettre ! Avant cela, j’ai (un peu) mis à jour mon site et rajouter un lien pour ma page LinkedIn : n’hésitez pas à me suivre ou m’ajouter afin de recevoir les prochaines mises à jour 😊.\nLe Go (ou Golang) est un langage développé depuis quelques années désormais (plus de 10 ans) par une équipe de Google, et pas des débutants ! Notamment Brian Kernighan, éminent informaticien en C et autre. Ils ont alors développé ce langage pour simplifier l’utilisation du multithreading, principe au coeur du Go.\nJe vais vous présenter içi les goroutines, principe de base pour la mise en oeuvre du multithreading en Go.\nDéfinitions Programmation concurente : composition de plusieurs activités autonomes.\nGo supporte deux types de programmation concurrente :\n CSP (communicating sequential processes - processus séquentiels de communication). Les variables sont passées entre des activités indépendamment mais les variables sont la plus part du temps confinées à une seule de ces activités. shared memory multithreading (multithreading à mémoire partagée)  goroutine : activité exécutée en concurrence\nExemples Maintenant que nous avons vu le principe de base, place aux exemples !\nBasique On va faire un simple hello world ! mais en utilisant une goroutine. On va écrire une fonction say qui prend une string en argument et que l’on appelera en tant que goroutine (avec le mot-clé go) et qui nous affichera “hello”. Voyons ce que ça donne :\npackage main import \"fmt\" func say(s string) { fmt.Println(s) } func main() { go say(\"hello\") fmt.Println(\"world !\") } La sortie :\nworld ! Quoi ?!? Mais il manque un bout !!! 😱😱😱\nExplication : la boucle principale main n’attend pas la fin de l’exécution de la goroutine. Pour le moment, on va résoudre ça avec un simple sleep. On modifie le code ainsi :\npackage main import ( \"fmt\" \"time\" ) func say(s string) { fmt.Println(s) } func main() { go say(\"hello\") fmt.Println(\"world !\") time.Sleep(500 * time.Millisecond) } On obtient en sortie :\nworld ! hello Ah !!!!! Voilà ! On obtient bien ce que l’on souhaite en sortie mais c’est loin d’être optimal…\nOn peut faire beaucoup mieux !! Place à la suite 😉\nAttendre plusieurs goroutines Lorsque l’on a besoin d’attendre que une ou plusieurs goroutine finissent, on utilise le packet sync et la fonction sync.WaitGroup. Elle est utilisé pour bloquer le main (ou toute autre fonction appelante) jusqu’à ce que toutes les goroutine aient terminé leur travail. Un exemple parlant (adapté de l’article How to wait for all goroutines to finish in Golang) :\npackage main import ( \"fmt\" \"sync\" \"time\" ) func worker(wg *sync.WaitGroup, id int) { defer wg.Done() //décrémentation (lorsque la goroutine a terminé)  fmt.Printf(\"Worker %v: Début\\n\", id) time.Sleep(time.Second) fmt.Printf(\"Worker %v: Terminé\\n\", id) } func main() { var wg sync.WaitGroup // déclaration  for i := 0; i 5; i++ { fmt.Println(\"Main: Lancement du Worker\", i) wg.Add(1) // incrémentation d'une unité \tgo worker(\u0026wg, i) // passage par adresse \t} fmt.Println(\"Main: En attente des Workers\") wg.Wait() fmt.Println(\"Main: Terminé\") } Ce qui donne :\nMain: Lancement du Worker 0 Main: Lancement du Worker 1 Main: Lancement du Worker 2 Main: Lancement du Worker 3 Main: Lancement du Worker 4 Worker 0: Début Worker 4: Début Worker 2: Début Main: En attente des Workers Worker 1: Début Worker 3: Début Worker 1: Terminé Worker 0: Terminé Worker 4: Terminé Worker 2: Terminé Worker 3: Terminé Main: Terminé N’est-ce pas formidable ?\nL’utilisation de WaitGroup est assez simple :\n déclation dans le main incrémentation avec .Add(1) avant l’appel de la goroutine appel de la goroutine avec passage par adresse du WaitGroup décrémentation du WaitGroup au sein de la goroutine avec .Done() en fin de bloc, on attend la fin des goroutine avec .Wait()  Notez l’utilisation de defer pour la décrémentation dès le début de la goroutine. Ce mot-clé permet de s’assurer que la fonction qui le suit sera bien appelée à la fin du bloc. On le retrouve pour la lecture des fichiers : on s’assure ainsi que ce dernier sera bien fermé à la fin du traitement.\ngoroutine anonyme Lorsque la goroutine ne fait quelques lignes (pas trop, sinon le code devient vite illisible…), il est possible d’utiliser une fonction anonyme. Voyons avec l’exemple précédent ce que cela change :\npackage main import ( \"fmt\" \"sync\" \"time\" ) func main() { var wg sync.WaitGroup // déclaration  for i := 0; i 5; i++ { fmt.Println(\"Main: Lancement du Worker\", i) wg.Add(1) // incrémentation d'une unité \tgo func(id int) { // fonction anonyme \tdefer wg.Done() //décrémentation (lorsque la goroutine a terminé)  fmt.Printf(\"Worker %v: Début\\n\", id) time.Sleep(time.Second) fmt.Printf(\"Worker %v: Terminé\\n\", id) }(i) } fmt.Println(\"Main: En attente des Workers\") wg.Wait() fmt.Println(\"Main: Terminé\") } C’est un peu plus concis 😊\nConclusion Voilà, c’est terminé pour cette petite présentation ! J’ai utilisé également les livres suivant dans mon apprentissage :\n The Go Programming Language [Le langage Go](Go Programming Language, The)  A bientôt !\n",
+  "articleBody": "Nouvelle année, nouveau challenge ! Ca fait pas mal de temps de je lorgne sur le Go (ou Golang) et ça y est, il est venu le temps de s’y mettre ! Avant cela, j’ai (un peu) mis à jour mon site et rajouter un lien pour ma page LinkedIn : n’hésitez pas à me suivre ou m’ajouter afin de recevoir les prochaines mises à jour 😊.\nLe Go (ou Golang) est un langage développé depuis quelques années désormais (plus de 10 ans) par une équipe de Google, et pas des débutants ! Notamment Brian Kernighan, éminent informaticien en C et autre. Ils ont alors développé ce langage pour simplifier l’utilisation du multithreading, principe au coeur du Go.\nJe vais vous présenter içi les goroutines, principe de base pour la mise en oeuvre du multithreading en Go.\nDéfinitions Programmation concurente : composition de plusieurs activités autonomes.\nGo supporte deux types de programmation concurrente :\n CSP (communicating sequential processes - processus séquentiels de communication). Les variables sont passées entre des activités indépendamment mais les variables sont la plus part du temps confinées à une seule de ces activités. shared memory multithreading (multithreading à mémoire partagée)  goroutine : activité exécutée en concurrence\nExemples Maintenant que nous avons vu le principe de base, place aux exemples !\nBasique On va faire un simple hello world ! mais en utilisant une goroutine. On va écrire une fonction say qui prend une string en argument et que l’on appelera en tant que goroutine (avec le mot-clé go) et qui nous affichera “hello”. Voyons ce que ça donne :\npackage main import \"fmt\" \t func say(s string) { \tfmt.Println(s) }  func main() {  go say(\"hello\") \tfmt.Println(\"world !\") } La sortie :\nworld ! Quoi ?!? Mais il manque un bout !!! 😱😱😱\nExplication : la boucle principale main n’attend pas la fin de l’exécution de la goroutine. Pour le moment, on va résoudre ça avec un simple sleep. On modifie le code ainsi :\npackage main  import ( \t\"fmt\" \t\"time\" )  func say(s string) { \tfmt.Println(s) }  func main() { \tgo say(\"hello\") \tfmt.Println(\"world !\") \ttime.Sleep(500 * time.Millisecond) } On obtient en sortie :\nworld ! hello Ah !!!!! Voilà ! On obtient bien ce que l’on souhaite en sortie mais c’est loin d’être optimal…\nOn peut faire beaucoup mieux !! Place à la suite 😉\nAttendre plusieurs goroutines Lorsque l’on a besoin d’attendre que une ou plusieurs goroutine finissent, on utilise le packet sync et la fonction sync.WaitGroup. Elle est utilisé pour bloquer le main (ou toute autre fonction appelante) jusqu’à ce que toutes les goroutine aient terminé leur travail. Un exemple parlant (adapté de l’article How to wait for all goroutines to finish in Golang) :\npackage main  import ( \t\"fmt\" \t\"sync\" \t\"time\" )  func worker(wg *sync.WaitGroup, id int) { \tdefer wg.Done() //décrémentation (lorsque la goroutine a terminé)  \tfmt.Printf(\"Worker %v: Début\\n\", id) \ttime.Sleep(time.Second) \tfmt.Printf(\"Worker %v: Terminé\\n\", id) }  func main() { \tvar wg sync.WaitGroup // déclaration  \tfor i := 0; i 5; i++ { \tfmt.Println(\"Main: Lancement du Worker\", i) \twg.Add(1) // incrémentation d'une unité \tgo worker(\u0026wg, i) // passage par adresse \t}  \tfmt.Println(\"Main: En attente des Workers\") \twg.Wait() \tfmt.Println(\"Main: Terminé\") } Ce qui donne :\nMain: Lancement du Worker 0 Main: Lancement du Worker 1 Main: Lancement du Worker 2 Main: Lancement du Worker 3 Main: Lancement du Worker 4 Worker 0: Début Worker 4: Début Worker 2: Début Main: En attente des Workers Worker 1: Début Worker 3: Début Worker 1: Terminé Worker 0: Terminé Worker 4: Terminé Worker 2: Terminé Worker 3: Terminé Main: Terminé N’est-ce pas formidable ?\nL’utilisation de WaitGroup est assez simple :\n déclation dans le main incrémentation avec .Add(1) avant l’appel de la goroutine appel de la goroutine avec passage par adresse du WaitGroup décrémentation du WaitGroup au sein de la goroutine avec .Done() en fin de bloc, on attend la fin des goroutine avec .Wait()  Notez l’utilisation de defer pour la décrémentation dès le début de la goroutine. Ce mot-clé permet de s’assurer que la fonction qui le suit sera bien appelée à la fin du bloc. On le retrouve pour la lecture des fichiers : on s’assure ainsi que ce dernier sera bien fermé à la fin du traitement.\ngoroutine anonyme Lorsque la goroutine ne fait quelques lignes (pas trop, sinon le code devient vite illisible…), il est possible d’utiliser une fonction anonyme. Voyons avec l’exemple précédent ce que cela change :\npackage main  import ( \t\"fmt\" \t\"sync\" \t\"time\" )  func main() { \tvar wg sync.WaitGroup // déclaration  \tfor i := 0; i 5; i++ { \tfmt.Println(\"Main: Lancement du Worker\", i) \twg.Add(1) // incrémentation d'une unité \t\tgo func(id int) { // fonction anonyme \tdefer wg.Done() //décrémentation (lorsque la goroutine a terminé)  \tfmt.Printf(\"Worker %v: Début\\n\", id) \ttime.Sleep(time.Second) \tfmt.Printf(\"Worker %v: Terminé\\n\", id) \t}(i) \t}  \tfmt.Println(\"Main: En attente des Workers\") \twg.Wait() \tfmt.Println(\"Main: Terminé\") } C’est un peu plus concis 😊\nConclusion Voilà, c’est terminé pour cette petite présentation ! J’ai utilisé également les livres suivant dans mon apprentissage :\n The Go Programming Language [Le langage Go](Go Programming Language, The)  A bientôt !\n",
   "wordCount" : "843",
   "inLanguage": "en",
   "datePublished": "2021-09-02T09:31:35+02:00",
@@ -178,93 +178,93 @@ Avant cela, j&rsquo;ai (un peu) mis à jour mon site et rajouter un lien pour ma
 <p>Maintenant que nous avons vu le principe de base, place aux exemples !</p>
 <h3 id="basique">Basique<a hidden class="anchor" aria-hidden="true" href="#basique">#</a></h3>
 <p>On va faire un simple <code>hello world !</code> mais en utilisant une <code>goroutine</code>. On va écrire une fonction <code>say</code> qui prend une <code>string</code> en argument et que l&rsquo;on appelera en tant que <code>goroutine</code> (avec le mot-clé <code>go</code>) et qui nous affichera &ldquo;hello&rdquo;. Voyons ce que ça donne :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
-	
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">say</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) {
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">s</span>)
-}
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">say</span>(<span style="color:#e6db74">&#34;hello&#34;</span>)
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;world !&#34;</span>)
-}
-</code></pre></div><p>La sortie :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">world !
-</code></pre></div><p>Quoi ?!? Mais il manque un bout !!! 😱😱😱<br>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">say</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">s</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">say</span>(<span style="color:#e6db74">&#34;hello&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;world !&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>La sortie :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>world !
+</span></span></code></pre></div><p>Quoi ?!? Mais il manque un bout !!! 😱😱😱<br>
 Explication : la boucle principale <code>main</code> n&rsquo;attend pas la fin de l&rsquo;exécution de la <code>goroutine</code>. Pour le moment, on va résoudre ça avec un simple <code>sleep</code>. On modifie le code ainsi :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;fmt&#34;</span>
-	<span style="color:#e6db74">&#34;time&#34;</span>
-)
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">say</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) {
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">s</span>)
-}
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">say</span>(<span style="color:#e6db74">&#34;hello&#34;</span>)
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;world !&#34;</span>)
-	<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">500</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Millisecond</span>)
-}
-</code></pre></div><p>On obtient en sortie :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">world !
-hello
-</code></pre></div><p>Ah !!!!! Voilà ! On obtient bien ce que l&rsquo;on souhaite en sortie mais c&rsquo;est loin d&rsquo;être optimal&hellip;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">say</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">s</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">say</span>(<span style="color:#e6db74">&#34;hello&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;world !&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">500</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Millisecond</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>On obtient en sortie :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>world !
+</span></span><span style="display:flex;"><span>hello
+</span></span></code></pre></div><p>Ah !!!!! Voilà ! On obtient bien ce que l&rsquo;on souhaite en sortie mais c&rsquo;est loin d&rsquo;être optimal&hellip;</p>
 <p>On peut faire beaucoup mieux !! Place à la suite 😉</p>
 <h3 id="attendre-plusieurs-goroutines">Attendre plusieurs goroutines<a hidden class="anchor" aria-hidden="true" href="#attendre-plusieurs-goroutines">#</a></h3>
 <p>Lorsque l&rsquo;on a besoin d&rsquo;attendre que une ou plusieurs <code>goroutine</code> finissent, on utilise le packet <code>sync</code> et la fonction <a href="https://pkg.go.dev/sync#WaitGroup">sync.WaitGroup</a>. Elle est utilisé pour bloquer le <code>main</code> (ou toute autre fonction appelante) jusqu&rsquo;à ce que toutes les <code>goroutine</code> aient terminé leur travail. Un exemple parlant (adapté de l&rsquo;article <a href="https://goinbigdata.com/golang-wait-for-all-goroutines-to-finish/">How to wait for all goroutines to finish in Golang</a>) :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;fmt&#34;</span>
-	<span style="color:#e6db74">&#34;sync&#34;</span>
-	<span style="color:#e6db74">&#34;time&#34;</span>
-)
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">worker</span>(<span style="color:#a6e22e">wg</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>, <span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int</span>) {
-	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>() <span style="color:#75715e">//décrémentation (lorsque la goroutine a terminé)
-</span><span style="color:#75715e"></span>
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Worker %v: Début\n&#34;</span>, <span style="color:#a6e22e">id</span>)
-	<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Worker %v: Terminé\n&#34;</span>, <span style="color:#a6e22e">id</span>)
-}
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">wg</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span> <span style="color:#75715e">// déclaration
-</span><span style="color:#75715e"></span>
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">5</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: Lancement du Worker&#34;</span>, <span style="color:#a6e22e">i</span>)
-		<span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>) <span style="color:#75715e">// incrémentation d&#39;une unité
-</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">worker</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">wg</span>, <span style="color:#a6e22e">i</span>) <span style="color:#75715e">// passage par adresse
-</span><span style="color:#75715e"></span>	}
-
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: En attente des Workers&#34;</span>)
-	<span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Wait</span>()
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: Terminé&#34;</span>)
-}
-</code></pre></div><p>Ce qui donne :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Main: Lancement du Worker <span style="color:#ae81ff">0</span>
-Main: Lancement du Worker <span style="color:#ae81ff">1</span>
-Main: Lancement du Worker <span style="color:#ae81ff">2</span>
-Main: Lancement du Worker <span style="color:#ae81ff">3</span>
-Main: Lancement du Worker <span style="color:#ae81ff">4</span>
-Worker 0: Début
-Worker 4: Début
-Worker 2: Début
-Main: En attente des Workers
-Worker 1: Début
-Worker 3: Début
-Worker 1: Terminé
-Worker 0: Terminé
-Worker 4: Terminé
-Worker 2: Terminé
-Worker 3: Terminé
-Main: Terminé
-</code></pre></div><p>N&rsquo;est-ce pas formidable ?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;sync&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">worker</span>(<span style="color:#a6e22e">wg</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>, <span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>() <span style="color:#75715e">//décrémentation (lorsque la goroutine a terminé)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Worker %v: Début\n&#34;</span>, <span style="color:#a6e22e">id</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Worker %v: Terminé\n&#34;</span>, <span style="color:#a6e22e">id</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">wg</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span> <span style="color:#75715e">// déclaration
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">5</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: Lancement du Worker&#34;</span>, <span style="color:#a6e22e">i</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>) <span style="color:#75715e">// incrémentation d&#39;une unité
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">worker</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">wg</span>, <span style="color:#a6e22e">i</span>) <span style="color:#75715e">// passage par adresse
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: En attente des Workers&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Wait</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: Terminé&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Ce qui donne :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Main: Lancement du Worker <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>Main: Lancement du Worker <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>Main: Lancement du Worker <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>Main: Lancement du Worker <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>Main: Lancement du Worker <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>Worker 0: Début
+</span></span><span style="display:flex;"><span>Worker 4: Début
+</span></span><span style="display:flex;"><span>Worker 2: Début
+</span></span><span style="display:flex;"><span>Main: En attente des Workers
+</span></span><span style="display:flex;"><span>Worker 1: Début
+</span></span><span style="display:flex;"><span>Worker 3: Début
+</span></span><span style="display:flex;"><span>Worker 1: Terminé
+</span></span><span style="display:flex;"><span>Worker 0: Terminé
+</span></span><span style="display:flex;"><span>Worker 4: Terminé
+</span></span><span style="display:flex;"><span>Worker 2: Terminé
+</span></span><span style="display:flex;"><span>Worker 3: Terminé
+</span></span><span style="display:flex;"><span>Main: Terminé
+</span></span></code></pre></div><p>N&rsquo;est-ce pas formidable ?</p>
 <p>L&rsquo;utilisation de <code>WaitGroup</code> est assez simple :</p>
 <ul>
 <li>déclation dans le <code>main</code></li>
@@ -276,35 +276,35 @@ Main: Terminé
 <p>Notez l&rsquo;utilisation de <code>defer</code> pour la décrémentation dès le début de la <code>goroutine</code>. Ce mot-clé permet de s&rsquo;assurer que la fonction qui le suit sera bien appelée à la fin du bloc. On le retrouve pour la lecture des fichiers : on s&rsquo;assure ainsi que ce dernier sera bien fermé à la fin du traitement.</p>
 <h3 id="goroutine-anonyme">goroutine anonyme<a hidden class="anchor" aria-hidden="true" href="#goroutine-anonyme">#</a></h3>
 <p>Lorsque la <code>goroutine</code> ne fait quelques lignes (pas trop, sinon le code devient vite illisible&hellip;), il est possible d&rsquo;utiliser une fonction anonyme. Voyons avec l&rsquo;exemple précédent ce que cela change :</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;fmt&#34;</span>
-	<span style="color:#e6db74">&#34;sync&#34;</span>
-	<span style="color:#e6db74">&#34;time&#34;</span>
-)
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">wg</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span> <span style="color:#75715e">// déclaration
-</span><span style="color:#75715e"></span>
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">5</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: Lancement du Worker&#34;</span>, <span style="color:#a6e22e">i</span>)
-		<span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>) <span style="color:#75715e">// incrémentation d&#39;une unité
-</span><span style="color:#75715e"></span>		
-		<span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int</span>) { <span style="color:#75715e">// fonction anonyme
-</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>() <span style="color:#75715e">//décrémentation (lorsque la goroutine a terminé)
-</span><span style="color:#75715e"></span>
-			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Worker %v: Début\n&#34;</span>, <span style="color:#a6e22e">id</span>)
-			<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
-			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Worker %v: Terminé\n&#34;</span>, <span style="color:#a6e22e">id</span>)
-		}(<span style="color:#a6e22e">i</span>)
-	}
-
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: En attente des Workers&#34;</span>)
-	<span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Wait</span>()
-	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: Terminé&#34;</span>)
-}
-</code></pre></div><p>C&rsquo;est un peu plus concis 😊</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;sync&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">wg</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span> <span style="color:#75715e">// déclaration
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">5</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: Lancement du Worker&#34;</span>, <span style="color:#a6e22e">i</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>) <span style="color:#75715e">// incrémentation d&#39;une unité
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int</span>) { <span style="color:#75715e">// fonction anonyme
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>() <span style="color:#75715e">//décrémentation (lorsque la goroutine a terminé)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Worker %v: Début\n&#34;</span>, <span style="color:#a6e22e">id</span>)
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Worker %v: Terminé\n&#34;</span>, <span style="color:#a6e22e">id</span>)
+</span></span><span style="display:flex;"><span>		}(<span style="color:#a6e22e">i</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: En attente des Workers&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Wait</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Main: Terminé&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>C&rsquo;est un peu plus concis 😊</p>
 <h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
 <p>Voilà, c&rsquo;est terminé pour cette petite présentation ! J&rsquo;ai utilisé également les livres suivant dans mon apprentissage :</p>
 <ul>
@@ -321,6 +321,11 @@ Main: Terminé
       <li><a href="http://www.bittenbypython.com/tags/multithreading/">multithreading</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="http://www.bittenbypython.com/posts/go1_18/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>Nouvelle version de Go : 1.18</span>
+  </a>
   <a class="next" href="http://www.bittenbypython.com/posts/20180824_micropython-esp32/">
     <span class="title">Next Page »</span>
     <br>
@@ -377,7 +382,7 @@ Main: Terminé
 </article>
     </main>
     <footer class="footer">
-    <span>&copy; 2021 <a href="http://www.bittenbypython.com/">Bitten By Python</a></span>
+    <span>&copy; 2022 <a href="http://www.bittenbypython.com/">Bitten By Python</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

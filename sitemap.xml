@@ -3,21 +3,24 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://www.bittenbypython.com/</loc>
-    <lastmod>2021-09-02T09:31:35+02:00</lastmod>
+    <lastmod>2022-03-25T22:00:59+01:00</lastmod>
   </url><url>
     <loc>http://www.bittenbypython.com/categories/</loc>
-    <lastmod>2021-09-02T09:31:35+02:00</lastmod>
+    <lastmod>2022-03-25T22:00:59+01:00</lastmod>
+  </url><url>
+    <loc>http://www.bittenbypython.com/categories/golang/</loc>
+    <lastmod>2022-03-25T22:00:59+01:00</lastmod>
+  </url><url>
+    <loc>http://www.bittenbypython.com/posts/go1_18/</loc>
+    <lastmod>2022-03-25T22:00:59+01:00</lastmod>
+  </url><url>
+    <loc>http://www.bittenbypython.com/posts/</loc>
+    <lastmod>2022-03-25T22:00:59+01:00</lastmod>
   </url><url>
     <loc>http://www.bittenbypython.com/tags/concurrence/</loc>
     <lastmod>2021-09-02T09:31:35+02:00</lastmod>
   </url><url>
-    <loc>http://www.bittenbypython.com/categories/golang/</loc>
-    <lastmod>2021-09-02T09:31:35+02:00</lastmod>
-  </url><url>
     <loc>http://www.bittenbypython.com/tags/multithreading/</loc>
-    <lastmod>2021-09-02T09:31:35+02:00</lastmod>
-  </url><url>
-    <loc>http://www.bittenbypython.com/posts/</loc>
     <lastmod>2021-09-02T09:31:35+02:00</lastmod>
   </url><url>
     <loc>http://www.bittenbypython.com/posts/20210902_goroutines/</loc>

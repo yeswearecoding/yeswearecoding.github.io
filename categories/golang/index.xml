@@ -6,7 +6,18 @@
     <description>Recent content in golang on Bitten By Python</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>fr-fr</language>
-    <lastBuildDate>Thu, 02 Sep 2021 09:31:35 +0200</lastBuildDate><atom:link href="http://www.bittenbypython.com/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 25 Mar 2022 22:00:59 +0100</lastBuildDate><atom:link href="http://www.bittenbypython.com/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nouvelle version de Go : 1.18</title>
+      <link>http://www.bittenbypython.com/posts/go1_18/</link>
+      <pubDate>Fri, 25 Mar 2022 22:00:59 +0100</pubDate>
+      
+      <guid>http://www.bittenbypython.com/posts/go1_18/</guid>
+      <description>Generics On peut définir la programmation générique comme un style de programmation qui permet de représenter des fonctions et des structures de données sous une forme générique, avec des types adaptés. Ca, c’est pour la théorie. Voyons un exemple.
+Pour illustrer le principe, imaginons que nous avons besoins de calculer la somme des éléments d’un map de int64 :
+// SumInts adds together the values of m. func SumInts(m map[string]int64) int64 {  var s int64  for _, v := range m {  s += v  }  return s } Rien d’exceptionnel.</description>
+    </item>
+    
     <item>
       <title>Programmation concurrente avec des goroutines</title>
       <link>http://www.bittenbypython.com/posts/20210902_goroutines/</link>
